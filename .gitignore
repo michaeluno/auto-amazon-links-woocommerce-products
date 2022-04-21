@@ -1,23 +1,57 @@
-# ignore everything in the root except the "wp-content" directory.
-!wp-content/
+# Externals
+# /tool
 
-# ignore everything in the "wp-content" directory, except:
-# "mu-plugins", "plugins", "themes" directory
-wp-content/*
-!wp-content/mu-plugins/
-!wp-content/plugins/
-!wp-content/themes/
-
-# ignore these plugins
-wp-content/plugins/hello.php
-
-# ignore specific themes
-wp-content/themes/twenty*/
-
-# ignore node dependency directories
+# Dependencies
+tool/vendor
 node_modules/
 
-# ignore log files and databases
+# Editor Files
+.idea
+_memos
+
+# backup files.
+*.old
+*.bak
+*.orig
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+ 
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+ 
+# Logs and databases #
+######################
 *.log
 *.sql
 *.sqlite
+ 
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.stackdump
+
+### Test setting files.
+settings.cfg

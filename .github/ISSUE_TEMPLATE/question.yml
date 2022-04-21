@@ -1,0 +1,40 @@
+name: Question
+description: Ask questions about the program behavior or get helped.
+labels: ["question"]
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Got stuck? Ask questions here to get helped.
+
+    - type: textarea
+      attributes:
+          label: Description
+          description: Is your question related to a problem? Please provide a clear and concise description of what the problem is.
+          placeholder: |
+              "I'm trying to [...] but cannot find information on how to do this."
+      validations:
+          required: true
+    - type: textarea
+
+      attributes:
+          label: Images
+          description: |
+              A picture or screen recording clip which helps understand what you describe. To create a GIF screen recording, you can use LIEcap: https://www.cockos.com/licecap/
+              Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
+              Sharing a code snippet that demonstrates the issue also helps. For short snippets, post them here, or use Gist for long ones or mulitple files: https://gist.github.com
+              Please ensure that your code can be run by others to reproduce and debug the issue.
+      validations:
+          required: false
+
+    - type: dropdown
+      id: existing
+      attributes:
+          label: Please confirm that you have searched existing issues in this repository.
+          description: https://github.com/michaeluno/auto-amazon-links-woocommerce-products/issues
+          multiple: true
+          options:
+             - 'Yes'
+             - 'No'
+      validations:
+          required: true
