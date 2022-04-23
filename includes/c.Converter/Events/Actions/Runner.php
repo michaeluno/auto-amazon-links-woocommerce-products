@@ -6,7 +6,7 @@ use AutoAmazonLinks\WooCommerceProducts\App;
 use AutoAmazonLinks\WooCommerceProducts\Commons\MemberInterface;
 
 /**
- * Keeps running the task of outputting units that enables the Unit to WooCommerce Products option
+ * Keeps running the background task of outputting units that enable the Unit to WooCommerce Products unit option
  * with a certain interval (once a day by default).
  * @since 0.1.0
  */
@@ -18,11 +18,16 @@ class Runner implements MemberInterface {
      */
     public $oUtil;
 
+    /**
+     * @since 0.1.0
+     * @var   string
+     */
     public $sActionHook = 'aal/wcp/converter/action/run';
 
     /**
      * How often the event should subsequently recur.
-     * @var string Either `hourly`, `twicedaily`, `daily`, `weekly`
+     * @since 0.1.0
+     * @var   string Either `hourly`, `twicedaily`, `daily`, `weekly`
      */
     public $sRecurrence = 'daily';
 
@@ -42,7 +47,8 @@ class Runner implements MemberInterface {
 
     /**
      * Sets the '_unit_to_wc_products_updated_time' meta value.
-     * This is important to sort by `meta_value_num`. If the value does not exist, WordPress drops the found record.
+     * This is important to sort posts by `meta_value_num` with WP_Query. If the value does not exist, WordPress drops the found record.
+     * @since 0.1.0
      * @param integer $iUnitID
      */
     public function replyOnUnitPublish( $iUnitID ) {
@@ -52,6 +58,7 @@ class Runner implements MemberInterface {
     }
 
     /**
+     * @since  0.1.0
      * @remark For unknown reasons, when using a closure function for a callback, the event is not get scheduled although the closure function is called
      * and the schedule result return value yields true. To un-schedule callback seems to be fine with a closure.
      */
