@@ -2,7 +2,9 @@
 
 namespace AutoAmazonLinks\WooCommerceProducts\Events\Redirects;
 
-class Checkout {
+use AutoAmazonLinks\WooCommerceProducts\Commons\MemberInterface;
+
+class Checkout implements MemberInterface {
 
     public function run() {
         if ( did_action( 'wp' ) ) {

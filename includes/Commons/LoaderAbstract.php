@@ -12,29 +12,23 @@ abstract class LoaderAbstract implements LoaderInterface {
      * @remark Each loader class should define this property for component members to refer to.
      * @var    string The component directory path.
      */
-    static public $sDirPath    = __DIR__;
-
-    /**
-     * @since 0.1.0
-     * @var   array A list of component loader classes to load.
-     */
-    public $aComponents = [];
+    static public $sDirPath = __DIR__;
 
     /**
      * @sicne 0.1.0
-     * @var   array A list of this component member classes to load.
+     * @var   array A list of this component members.
      */
-    public $aMembers   = [];
+    public $aMembers = [];
 
     /**
      * Loads the component.
      * @since 0.1.0
      */
     public function run() {
-        foreach( array_merge( $this->aMembers, $this->aComponents ) as $_sClassName ) {
-\AmazonAutoLinks_Debug::log( $_sClassName . ' ' . class_exists( $_sClassName ) );
-            $_oComponent = new $_sClassName();
-            $_oComponent->run();
+        foreach( $this->aMembers as $_sClassName => $_mThing ) {
+            $_oMember = new $_sClassName();
+            $_oMember->run();
+            $this->aMembers[ $_sClassName ] = $_oMember;
         }
     }
 

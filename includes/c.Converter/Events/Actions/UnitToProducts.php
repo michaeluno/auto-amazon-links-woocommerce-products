@@ -1,52 +1,87 @@
 <?php
 
-namespace AutoAmazonLinks\WooCommerceProducts\Events\Actions;
+namespace AutoAmazonLinks\WooCommerceProducts\Converter\Events\Actions;
 
-use AutoAmazonLinks\WooCommerceProducts\App;
 use AutoAmazonLinks\WooCommerceProducts\Commons\MemberInterface;
-use AutoAmazonLinks\WooCommerceProducts\Utilities\Feed;
 
 /**
- * @since 0.0.1
- * @deprecated 0.1.0
+ * @since 0.1.0
  */
 class UnitToProducts implements MemberInterface {
 
-    static public $sActionHook;
-
     /**
-     * @var \AmazonAutoLinks_Unit_Utility
+     * @since 0.1.0
+     * @var   \AmazonAutoLinks_Unit_Utility
      */
     public $oUtil;
 
     /**
-     * Sets up properties and hooks.
+     * @since 0.1.0
+     * @var   \AmazonAutoLinks_UnitOutput_Base
      */
-    public function __construct() {
-        self::$sActionHook = App::$sActionCreateProducts;
-    }
+    public $oUnitOutput;
 
+    /**
+     * @since 0.1.0
+     * @var   integer
+     */
+    public $iLatestUpdated = 0;
+
+    /**
+     * @since 0.1.0
+     */
     public function run() {
-        add_action( self::$sActionHook, [ $this, 'replyToDoAction' ] );
+        add_action( 'aal/wcp/converter/action/convert_unit_to_products', [ $this, 'replyToDoAction' ] );
     }
 
-    public function replyToDoAction() {
+    /**
+     * @since 0.1.0
+     */
+    public function replyToDoAction( $iUnitID ) {
         $this->oUtil = new \AmazonAutoLinks_Unit_Utility;
-        array_walk( APP::$aUnitFeeds, [ $this, 'createProductsFromUnitFeeds' ] );
+        add_filter( 'aal_filter_products', [ $this, 'replyToCaptureUnitOutputObject' ], 1, 3 );
+        $_aProducts  = apply_filters( 'aal_filter_output_products', [], [ 'id' => $iUnitID ] );
+        remove_filter( 'aal_filter_products', [ $this, 'replyToCaptureUnitOutputObject' ], 1 );
+
+        $_iPreviousUpdated = ( integer ) get_post_meta( $iUnitID, '_unit_to_wc_products_updated_time', true );
+        update_post_meta( $iUnitID, '_unit_to_wc_products_updated_time', time() );  // temporarily store the current time to prevent from the UnitOutput class to schedule another simultaneously
+
+        // Process conversion
+        array_walk($_aProducts, [ $this, 'replyToConvertUnitToProducts' ] );
+        update_post_meta( $iUnitID, '_unit_to_wc_products_updated_time', $this->iLatestUpdated ? $this->iLatestUpdated : $_iPreviousUpdated );
+
     }
+        /**
+         * @since 0.1.0
+         */
+        public function replyToCaptureUnitOutputObject( $aProducts, $deprecated, $oUnitOutput ) {
+            $oUnitOutput->bUnitToWCProductsProcessing = true;   // store a custom flag so that the UnitOutput class can ignore the calls made by this class
+            $this->oUnitOutput = $oUnitOutput;
+            return $aProducts;
+        }
 
-    public function createProductsFromUnitFeeds( $sFeedURL, $iIndex ){
-        $_oFeed  = new Feed( $sFeedURL );
-        $_oFeed->fetch();
-        $_aItems = $_oFeed->getItems();
-        array_walk($_aItems, [ $this, 'createProductFromItem' ] );
-    }
+    /**
+     * @since 0.1.0
+     */
+    public function replyToConvertUnitToProducts( $aItem, $iIndex ) {
 
-    public function createProductFromItem( $aItem, $iIndex ) {
+        if ( ! isset( $aItem[ 'ASIN' ] ) ) {
+            return;
+        }
+        
+        $_iThisUpdatedTime = ( integer ) $this->oUtil->getElement( $aItem, [ 'updated_date' ], 0 );
+        
+        $_sSKU             = $this->oUtil->getElement( $aItem, [ 'product_id' ], $this->oUtil->getElement( $aItem, [ 'ASIN' ] ) );
+        $_iProductID       = wc_get_product_id_by_sku( $_sSKU );
 
-        $_sSKU       = $this->oUtil->getElement( $aItem, [ 'product_id' ], $this->oUtil->getElement( $aItem, [ 'ASIN' ] ) );
-        $_iProductID = wc_get_product_id_by_sku( $_sSKU );
-        $_oWCProduct = new \WC_Product_Simple( $_iProductID );
+        $_iLastUpdatedTime = ( integer ) get_post_meta( $_iProductID, '_updated_time', true );
+
+        // There are cases that only one or a few of the products are updated and the rest doesn't need to update.
+        if ( $_iLastUpdatedTime && $_iLastUpdatedTime >= $_iThisUpdatedTime ) {
+            return;
+        }
+
+        $_oWCProduct       = new \WC_Product_Simple( $_iProductID );
         $_oWCProduct->set_name( $aItem[ 'title' ] );
         $_oWCProduct->set_status( 'publish' );
         $_oWCProduct->set_catalog_visibility( 'visible' );
@@ -98,9 +133,11 @@ class UnitToProducts implements MemberInterface {
         // Plugin specific post meta
         update_post_meta( $_iID, '_product_url', $aItem[ 'product_url' ] );
         update_post_meta( $_iID, '_thumbnail_url', $aItem[ 'thumbnail_url' ] );
-        update_post_meta( $_iID, '_updated_time', $aItem[ 'updated_date' ] );
+        update_post_meta( $_iID, '_updated_time', $_iThisUpdatedTime );
         
         $this->___setCategoriesFromItem( $_iID, $aItem );
+        
+        $this->iLatestUpdated = $_iThisUpdatedTime > $this->iLatestUpdated ? $_iThisUpdatedTime : $this->iLatestUpdated;
 
     }
         private function ___setCategoriesFromItem( $iPostID, $aItem ) {

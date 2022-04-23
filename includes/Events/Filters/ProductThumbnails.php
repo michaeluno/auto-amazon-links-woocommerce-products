@@ -2,10 +2,12 @@
 
 namespace AutoAmazonLinks\WooCommerceProducts\Events\Filters;
 
+use AutoAmazonLinks\WooCommerceProducts\Commons\MemberInterface;
+
 /**
  * Handles WooCommerce product meta data adjustments.
  */
-class ProductThumbnails {
+class ProductThumbnails implements MemberInterface {
 
     public function run() {
         add_filter( 'woocommerce_product_get_image', [ $this, 'replyToGetProductThumbnail' ], 10, 2 );
