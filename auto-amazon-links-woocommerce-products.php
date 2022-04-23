@@ -17,29 +17,11 @@ class App {
     static public $sFilePath = __FILE__;
 
     /**
-     * @var array
-     */
-    static public $aUnitFeeds = [];
-
-    /**
-     * @var string Either `hourly`, `twicedaily`, `daily`, `weekly`
-     * @deprecated 0.1.0
-     */
-    // static public $sIntervalChecks = 'daily';
-
-    /**
-     * @var string The custom action hook name to create products from units.
-     * @deprecated 0.1.0
-     */
-    static public $sActionCreateProducts = 'aal/wcp/action/create_products';
-
-    /**
      * @sicne 0.1.0
      * @var   array A list of this component member classes to load.
      */
     public $aMembers = [
         __NAMESPACE__ . '\\Converter\\Loader' => null,
-        // __NAMESPACE__ . '\\Events\\Actions\\UnitToProducts' => null, // @deprecated
         __NAMESPACE__ . '\\Events\\Filters\\ProductThumbnails' => null,
         __NAMESPACE__ . '\\Events\\Redirects\\Checkout' => null,
     ];
