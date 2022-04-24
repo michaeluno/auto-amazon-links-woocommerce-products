@@ -85,7 +85,7 @@ class UnitToProducts implements MemberInterface {
         $_oWCProduct->set_name( $aItem[ 'title' ] );
         $_oWCProduct->set_status( 'publish' );
         $_oWCProduct->set_catalog_visibility( 'visible' );
-        $_oWCProduct->set_sold_individually( true );
+        $_oWCProduct->set_sold_individually( false );   // allow multiple quantities
         $_oWCProduct->set_downloadable( false );
         $_oWCProduct->set_virtual( true );
 
