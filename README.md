@@ -12,7 +12,7 @@ This WordPress plugin converts Auto Amazon Links units to WooCommerce products.
 1. Have units created with Auto Amazon Links.
 2. Navigate to **Dashboard** -> **Auto Amazon Links** -> **Manage Units** and click on **Edit** of the unit you want to convert to WooCommerce products.
 3. Find the **Unit to WooCommerce Product Converter** section and enable the option.
-4. Go back to the unit listing table (Step 2) and click **Renew Cache** in row of the subject unit.
+4. Go back to the unit listing table (Step 2) and click **Renew Cache** in the row of the subject unit.
 
 ## License
 [GPL v2 or later](./LICENSE).
