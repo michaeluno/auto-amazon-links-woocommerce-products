@@ -23,13 +23,18 @@ class UnitOutput implements MemberInterface {
      */
     public function replyToCheckUpdatedTime( $aProducts, $deprecated, $oUnitOutput ) {
 
-        // There are direct argument calls such shortcodes, widgets etc. and those don't have the unit ID argument.
         $_iUnitID = ( integer ) $oUnitOutput->oUnitOption->get( 'id' );
-        if ( ! $_iUnitID ) {
-            return $aProducts;
-        }
 
-        if ( ! $this->___shouldProceed( $oUnitOutput, $_iUnitID, $aProducts ) ) {
+        try {
+
+            // There are direct argument calls such shortcodes, widgets etc. and those don't have the unit ID argument.
+            if ( ! $_iUnitID ) {
+                throw new \Exception( 'A unit id is not given in the arguments.' );
+            }
+
+            $this->___tryCheckProcessable( $oUnitOutput, $_iUnitID, $aProducts );
+
+        } catch ( \Exception $_oException ) {
             return $aProducts;
         }
 
@@ -41,27 +46,26 @@ class UnitOutput implements MemberInterface {
          * @param  \AmazonAutoLinks_UnitOutput_Base $oUnitOutput
          * @param  integer $iUnitID
          * @param  array   $aProducts
-         * @return boolean
          * @since  0.1.0
+         * @throws \Exception
          */
-        private function ___shouldProceed( $oUnitOutput, $iUnitID, $aProducts ) {
+        private function ___tryCheckProcessable( $oUnitOutput, $iUnitID, $aProducts ) {
 
             if ( ! ( boolean ) get_post_meta( $iUnitID, '_unit_to_wc_products_enable', true ) ) {
-                return false;
+                throw new \Exception( 'Option not enabled.' );
             }
             if ( ! empty( $oUnitOutput->bUnitToWCProductsProcessing ) ) {
-                return false;
+                throw new \Exception( 'Processing.' );
             }
             if ( ( boolean ) $oUnitOutput->oUnitOption->get( '_force_cache_renewal' ) ) {
-                return true;
+                return;
             }
 
             $_iLastUpdatedTime = ( integer ) get_post_meta( $iUnitID, '_unit_to_wc_products_updated_time', true );
             $_iUpdatedTime     = $this->___getLatestUpdatedTime( $aProducts );
             if ( $_iLastUpdatedTime && $_iLastUpdatedTime >= $_iUpdatedTime ) {
-                return false;
+                throw new \Exception( 'Products have not been updated yet.' );
             }
-            return true;
 
         }
             /**
