@@ -38,14 +38,11 @@ class App {
      * @since 0.1.0
      */
     public function run() {
-
-        // When activating the plugin, this hook is already triggered,
-        if ( did_action( 'plugins_loaded' ) ) {
+        if ( did_action( 'plugins_loaded' ) ) { // When activating the plugin, this hook is already triggered,
             $this->replyToLoad();
             return;
         }
-        add_action( 'plugins_loaded', [ $this, 'replyToLoad' ] );
-
+        add_action( 'plugins_loaded', [ $this, 'replyToLoad' ], 9 ); // The priority of 9 is because this plugin needs to be loaded before Auto Amazon Links' background routines, especially prefetching units
     }
         /**
          * @since 0.1.0
