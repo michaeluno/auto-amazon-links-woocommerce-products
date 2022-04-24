@@ -31,13 +31,14 @@ class UnitToProducts implements MemberInterface {
      * @since 0.1.0
      */
     public function run() {
-        add_action( 'aal/wcp/converter/action/convert_unit_to_products', [ $this, 'replyToDoAction' ] );
+        add_action( 'aal/wcp/converter/action/convert_unit_to_products', [ $this, 'replyToDoAction' ], 10, 2 );
     }
 
     /**
      * @since 0.1.0
      */
-    public function replyToDoAction( $iUnitID ) {
+    public function replyToDoAction( $iUnitID, $bForce ) {
+
         $this->oUtil = new \AmazonAutoLinks_Unit_Utility;
         add_filter( 'aal_filter_products', [ $this, 'replyToCaptureUnitOutputObject' ], 1, 3 );
         $_aProducts  = apply_filters( 'aal_filter_output_products', [], [ 'id' => $iUnitID ] );

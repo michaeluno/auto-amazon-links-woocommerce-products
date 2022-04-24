@@ -38,7 +38,7 @@ class UnitOutput implements MemberInterface {
             return $aProducts;
         }
 
-        $this->___scheduleUnitToProductsConversion( $_iUnitID );
+        $this->___scheduleUnitToProductsConversion( $_iUnitID, ( boolean ) $oUnitOutput->oUnitOption->get( '_force_cache_renewal' ) );
         return $aProducts;
 
     }
@@ -91,10 +91,11 @@ class UnitOutput implements MemberInterface {
 
         /**
          * @since 0.1.0
-         * @param $iUnitID
+         * @param integer $iUnitID
+         * @param boolean $bForce  Whether to force updates.
          */
-        private function ___scheduleUnitToProductsConversion( $iUnitID ) {
-            $_aArguments = [ $iUnitID ];
+        private function ___scheduleUnitToProductsConversion( $iUnitID, $bForce ) {
+            $_aArguments = [ $iUnitID, $bForce ];
             if ( wp_next_scheduled( 'aal/wcp/converter/action/convert_unit_to_products', $_aArguments ) ) {
                 return;
             }
