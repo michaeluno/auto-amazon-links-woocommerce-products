@@ -134,7 +134,8 @@ class UnitToProducts implements MemberInterface {
         update_post_meta( $_iID, '_product_url', $aItem[ 'product_url' ] );
         update_post_meta( $_iID, '_thumbnail_url', $aItem[ 'thumbnail_url' ] );
         update_post_meta( $_iID, '_updated_time', $_iThisUpdatedTime );
-        
+        update_post_meta( $_iID, '_asin', $aItem[ 'ASIN' ] );
+
         $this->___setCategoriesFromItem( $_iID, $aItem );
         
         $this->iLatestUpdated = $_iThisUpdatedTime > $this->iLatestUpdated ? $_iThisUpdatedTime : $this->iLatestUpdated;
