@@ -47,12 +47,23 @@ class UnitToProducts implements MemberInterface {
         update_post_meta( $iUnitID, '_unit_to_wc_products_updated_time', time() );  // temporarily store the current time to prevent from the UnitOutput class to schedule another simultaneously
 
         // Process conversion
-        array_walk($_aProducts, [ $this, 'replyToConvertUnitToProducts' ] );
+        foreach( $_aProducts as $_aProduct ) {
+
+            try {
+                $this->___tryConvertUnitToProducts( $_aProduct );
+            } catch ( \Exception $_oException ) {
+
+                // \AmazonAutoLinks_Debug::log( 'Unit ID: ' . $iUnitID . ': '. $_oException->getCode() . ' :' . $_oException->getMessage() );
+    
+            }
+        }
+        
         update_post_meta( $iUnitID, '_unit_to_wc_products_updated_time', $this->iLatestUpdated ? $this->iLatestUpdated : $_iPreviousUpdated );
 
     }
         /**
-         * @since 0.1.0
+         * @since    0.1.0
+         * @callback add_filter() aal_filter_products
          */
         public function replyToCaptureUnitOutputObject( $aProducts, $deprecated, $oUnitOutput ) {
             $oUnitOutput->bUnitToWCProductsProcessing = true;   // store a custom flag so that the UnitOutput class can ignore the calls made by this class
@@ -61,12 +72,13 @@ class UnitToProducts implements MemberInterface {
         }
 
     /**
-     * @since 0.1.0
+     * @since  0.1.0
+     * @throws \Exception
      */
-    public function replyToConvertUnitToProducts( $aItem, $iIndex ) {
+    private function ___tryConvertUnitToProducts( $aItem ) {
 
         if ( ! isset( $aItem[ 'ASIN' ] ) ) {
-            return;
+            throw new \Exception( 'ASIN is not set.' );
         }
         
         $_iThisUpdatedTime = ( integer ) $this->oUtil->getElement( $aItem, [ 'updated_date' ], 0 );
@@ -78,7 +90,7 @@ class UnitToProducts implements MemberInterface {
 
         // There are cases that only one or a few of the products are updated and the rest doesn't need to update.
         if ( $_iLastUpdatedTime && $_iLastUpdatedTime >= $_iThisUpdatedTime ) {
-            return;
+            throw new \Exception( $aItem[ 'ASIN' ] . ' The product has not been updated yet. Last updated: ' . $_iLastUpdatedTime . ' This updated: ' . $_iThisUpdatedTime );
         }
 
         $_oWCProduct       = new \WC_Product_Simple( $_iProductID );
@@ -127,7 +139,7 @@ class UnitToProducts implements MemberInterface {
 
         $_iID = $_oWCProduct->save();
         if ( ! $_iID ) {
-            return;
+            throw new \Exception( $aItem[ 'ASIN' ] . ' Failed to create/update a product.' );
         }
 
         // Plugin specific post meta
