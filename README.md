@@ -5,7 +5,7 @@ This WordPress plugin converts Auto Amazon Links units to WooCommerce products.
 
 ## Basic Behaviors
 
-- The plugin runs a basic check in the background once a day that enables the **Unit to WooCommerce Product Converter** unit option. When a new product update is detected, it schedules a product conversion event.
+- The plugin runs a check in the background once a day with units enabling the **Unit to WooCommerce Product Converter** unit option whether there are updated products. When a new product update is detected, it schedules a product conversion event.
 - When the **Renew Cache** action link in the unit listing table is clicked, the plugin attempts to update products. 
 
 ## Usage
