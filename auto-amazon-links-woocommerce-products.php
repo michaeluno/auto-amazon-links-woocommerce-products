@@ -62,9 +62,14 @@ class App {
              * @return boolean
              */
             private function ___canLoad() {
+                // WooCommerce is required
+                if ( ! function_exists( '\WC' ) ) {
+                    return false;
+                }
                 if ( ! class_exists( '\WC_Product_Simple' ) ) {
                     return false;
                 }
+                // Auto Amazon Links 5.2.7 or above is required
                 if ( ! class_exists( '\AmazonAutoLinks_Registry' ) ) {
                     return false;
                 }
