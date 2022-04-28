@@ -14,6 +14,8 @@ namespace AutoAmazonLinks\WooCommerceProducts;
  */
 class App {
 
+    const NAME = 'Auto Amazon Links - WooCommerce Products';
+
     static public $sDirPath  = __DIR__;
     static public $sFilePath = __FILE__;
 
@@ -49,32 +51,36 @@ class App {
          * @since 0.1.0
          */
         public function replyToLoad() {
-            if ( ! $this->___canLoad() ) {
+            try {
+                $this->___tryCheckPluginCanLoad();
+            } catch( \Exception $_oException ) {
+                add_filter( 'plugin_row_meta', function( $aPluginMeta, $sPluginFilePath ) use( $_oException ) {
+                    if ( plugin_basename( __FILE__ ) !== $sPluginFilePath ) {
+                        return $aPluginMeta;
+                    }
+                    $_sInsert = "<div class='notice notice-error inline'><p class=''>"
+                        . $_oException->getMessage()
+                        . "</p></div>";
+                    $aPluginMeta[ 0 ] = isset( $aPluginMeta[ 0 ] ) ? $_sInsert . $aPluginMeta[ 0 ] : '';
+                    return $aPluginMeta;
+                }, 10, 2 );
                 return;
             }
             $this->___autoLoadClasses();
             $this->___loadComponents();
         }
             /**
-             * @since  0.1.0
-             * @return boolean
+             * @since  0.3.0
+             * @throws \Exception
              */
-            private function ___canLoad() {
-                // WooCommerce is required
-                if ( ! function_exists( '\WC' ) ) {
-                    return false;
+            private function ___tryCheckPluginCanLoad() {
+                if ( ! function_exists( '\WC' ) || ! class_exists( '\WC_Product_Simple' ) ) {
+                    throw new \Exception( __( 'Please activate WooCommerce.', 'auto-amazon-links-woocommerce-products' ) );
                 }
-                if ( ! class_exists( '\WC_Product_Simple' ) ) {
-                    return false;
+                $_sRequiredVersion = '5.2.8';
+                if ( ! class_exists( '\AmazonAutoLinks_Registry' ) || version_compare( \AmazonAutoLinks_Registry::VERSION, $_sRequiredVersion, '<' ) ) {
+                    throw new \Exception( sprintf( __( 'The plugin requires Auto Amazon Links %1$s or above.', 'auto-amazon-links-woocommerce-products' ), $_sRequiredVersion ) );
                 }
-                // Auto Amazon Links 5.2.7 or above is required
-                if ( ! class_exists( '\AmazonAutoLinks_Registry' ) ) {
-                    return false;
-                }
-                if ( version_compare( \AmazonAutoLinks_Registry::VERSION, '5.2.7b', '<' ) ) {
-                    return false;
-                }
-                return true;
             }
             /**
              * @since 0.1.0
