@@ -156,10 +156,10 @@ class UnitToProducts implements MemberInterface {
     }
         private function ___setCategoriesFromItem( $iPostID, $aItem ) {
             foreach( array_values( $this->oUtil->getElementAsArray( $aItem, [ '_categories' ] ) ) as $_aCategories ) {
-                $this->___setCategoriesWithHierarchalTerms( $iPostID, $_aCategories );
+                $this->___setCategoriesWithHierarchicalTerms( $iPostID, $_aCategories );
             }
         }
-            private function ___setCategoriesWithHierarchalTerms( $iPostID, array $aTerms ) {
+            private function ___setCategoriesWithHierarchicalTerms( $iPostID, array $aTerms ) {
                 $_aTermIDs    = [];
                 foreach( $aTerms as $_iDepth => $_sTerm ) {
                     $_aTermIDs[ $_iDepth ] = $this->___createTermByDepth(
