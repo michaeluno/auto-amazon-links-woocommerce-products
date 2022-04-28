@@ -1,11 +1,11 @@
 name: Bug report
 description: Report a bug with Admin Page Framework
-labels: ["bug"]
+labels: ["bug", "unconfirmed"]
 body:
     - type: markdown
       attributes:
           value: |
-              Thanks for taking the time to fill out this bug report! For a security issue, please report it to: aal-support@michaeluno.jp
+              Thanks for taking the time to fill out this bug report! Please keep one issue per topic to help organize and search for later references. For a security issue, please report it to [here](aal-support@michaeluno.jp).
     - type: textarea
       attributes:
           label: Description
@@ -54,7 +54,7 @@ body:
       id: existing
       attributes:
           label: Please confirm that you have searched existing issues in this repository.
-          description: https://github.com/michaeluno/amazon-auto-links/issues
+          description: https://github.com/michaeluno/amazon-auto-links-woocommerce-products/issues
           multiple: true
           options:
              - 'Yes'
@@ -65,7 +65,7 @@ body:
     - type: dropdown
       id: plugins
       attributes:
-          label: Please confirm that the problem occurs with the default theme and all the plugins deactivated except "Auto Amazon Links".
+          label: Please confirm that the problem occurs with the WooCommerce default theme, [StoreFront](https://wordpress.org/themes/storefront/) and all the plugins deactivated except "Auto Amazon Links" and "Auto Amazon Links - WooCommerce Products".
           multiple: true
           options:
              - 'Yes'
