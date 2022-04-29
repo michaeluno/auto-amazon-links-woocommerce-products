@@ -54,7 +54,7 @@ class UnitToProducts implements MemberInterface {
         foreach( $_aProducts as $_aProduct ) {
 
             try {
-                $this->___tryConvertUnitToProducts( $_aProduct );
+                $this->___tryConvertUnitProductToWooCommerceProduct( $_aProduct );
             } catch ( \Exception $_oException ) {
 
                 // \AmazonAutoLinks_Debug::log( 'Unit ID: ' . $iUnitID . ': '. $_oException->getCode() . ' :' . $_oException->getMessage() );
@@ -79,7 +79,7 @@ class UnitToProducts implements MemberInterface {
      * @since  0.1.0
      * @throws \Exception
      */
-    private function ___tryConvertUnitToProducts( $aItem ) {
+    private function ___tryConvertUnitProductToWooCommerceProduct( $aItem ) {
 
         if ( ! isset( $aItem[ 'ASIN' ] ) ) {
             throw new \Exception( 'ASIN is not set.' );
