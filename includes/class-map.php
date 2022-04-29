@@ -13,6 +13,7 @@ return array(
     "AutoAmazonLinks\\WooCommerceProducts\\Commons\\Admin\\FormFieldsAbstract" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/commons/admin/FormFieldsAbstract.php", 
     "AutoAmazonLinks\\WooCommerceProducts\\Commons\\Admin\\FormFieldsInterface" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/commons/admin/FormFieldsInterface.php", 
     "AutoAmazonLinks\\WooCommerceProducts\\Commons\\Admin\\PostMetaBoxAbstract" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/commons/admin/PostMetaBoxAbstract.php", 
+    "AutoAmazonLinks\\WooCommerceProducts\\Commons\\Utility" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/commons/utilities/Utility.php", 
     "AutoAmazonLinks\\WooCommerceProducts\\Events\\Filters\\PriceHTML" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/events/filters/PriceHTML.php", 
     "AutoAmazonLinks\\WooCommerceProducts\\Events\\Filters\\ProductThumbnails" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/events/filters/ProductThumbnails.php", 
     "AutoAmazonLinks\\WooCommerceProducts\\Events\\Redirects\\Checkout" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/events/redirects/Checkout.php", 
