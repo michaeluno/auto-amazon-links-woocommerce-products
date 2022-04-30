@@ -17,67 +17,70 @@ trait Utility {
         
         $_oUtil           = new \AmazonAutoLinks_Utility();
         $_sSKU            = $_oUtil->getElement( $aItem, [ 'product_id' ], $_oUtil->getElement( $aItem, [ 'ASIN' ] ) );
+        $iWCProductID     = $iWCProductID ? $iWCProductID : wc_get_product_id_by_sku( $_sSKU );
         
-        if ( ! $iWCProductID ) {
-            $iWCProductID = wc_get_product_id_by_sku( $_sSKU );            
-        }
+        try {
+            
+            $_oWCProduct      = new \WC_Product_Simple( $iWCProductID );
+            $_oWCProduct->set_name( $aItem[ 'title' ] );
+            $_oWCProduct->set_status( 'publish' );
+            $_oWCProduct->set_catalog_visibility( 'visible' );
+            $_oWCProduct->set_sold_individually( false );   // allow multiple quantities
+            $_oWCProduct->set_downloadable( false );
+            $_oWCProduct->set_virtual( true );
+    
+            // Product meta
+            $_oWCProduct->set_sku( $_sSKU );
+            $_oWCProduct->set_short_description( $_oUtil->getElement( $aItem, [ 'text_description' ] ) );
+            $_oWCProduct->set_description( $_oUtil->getElement( $aItem, [ 'feature' ] ) );
+            $_sPriceProper     = self::getPriceAmountExtracted(
+                $_oUtil->getElement(
+                    $aItem,
+                    [ 'price_amount' ], // for Product Search and PA-API units
+                    $_oUtil->getElement( $aItem, [ 'formatted_price' ], '' )   // for Category units
+                )
+            );
+            $_sPriceDiscounted = self::getPriceAmountExtracted(
+                $_oUtil->getElement(
+                    $aItem, [ 'discounted_price' ], // for PA-API units
+                    $_oUtil->getElement( $aItem, [ 'discounted_price_amount' ], '' )    // for Product Search units @todo set a proper element
+                )
+            );
+            $_sPriceDisplay    = strlen( $_sPriceDiscounted ) ? $_sPriceDiscounted : $_sPriceProper;
+            if ( strlen( $_sPriceDiscounted ) ) {
+                $_oWCProduct->set_sale_price( $_sPriceDisplay );
+            }
+            if ( $_sPriceDisplay ) {
+                $_oWCProduct->set_price( $_sPriceDisplay );
+            }
+            if ( strlen( $_sPriceProper ) ) {
+                $_oWCProduct->set_regular_price( $_sPriceProper );
+            }
+            $_dRating = ( ( integer ) $_oUtil->getElement( $aItem, [ 'rating' ] ) ) / 10;
+            if ( $_dRating ) {
+                $_oWCProduct->set_average_rating( $_dRating );
+            }
+            $_iNumberOfRatings = ( integer ) $_oUtil->getElement( $aItem, [ 'number_of_reviews' ] );
+            if ( $_iNumberOfRatings ) {
+                $_oWCProduct->set_review_count( $_iNumberOfRatings );
+            }            
+            
+        } catch ( \Exception $_oException ) {
+            return 0;    
+        } 
         
-        $_oWCProduct      = new \WC_Product_Simple( $iWCProductID );
-        $_oWCProduct->set_name( $aItem[ 'title' ] );
-        $_oWCProduct->set_status( 'publish' );
-        $_oWCProduct->set_catalog_visibility( 'visible' );
-        $_oWCProduct->set_sold_individually( false );   // allow multiple quantities
-        $_oWCProduct->set_downloadable( false );
-        $_oWCProduct->set_virtual( true );
-
-        // Product meta
-        $_oWCProduct->set_sku( $_sSKU );
-        $_oWCProduct->set_short_description( $_oUtil->getElement( $aItem, [ 'text_description' ] ) );
-        $_oWCProduct->set_description( $_oUtil->getElement( $aItem, [ 'feature' ] ) );
-        $_sPriceProper     = self::getPriceAmountExtracted(
-            $_oUtil->getElement(
-                $aItem,
-                [ 'price_amount' ], // for Product Search and PA-API units
-                $_oUtil->getElement( $aItem, [ 'formatted_price' ], '' )   // for Category units
-            )
-        );
-        $_sPriceDiscounted = self::getPriceAmountExtracted(
-            $_oUtil->getElement(
-                $aItem, [ 'discounted_price' ], // for PA-API units
-                $_oUtil->getElement( $aItem, [ 'discounted_price_amount' ], '' )    // for Product Search units @todo set a proper element
-            )
-        );
-        $_sPriceDisplay    = strlen( $_sPriceDiscounted ) ? $_sPriceDiscounted : $_sPriceProper;
-        if ( strlen( $_sPriceDiscounted ) ) {
-            $_oWCProduct->set_sale_price( $_sPriceDisplay );
-        }
-        if ( $_sPriceDisplay ) {
-            $_oWCProduct->set_price( $_sPriceDisplay );
-        }
-        if ( strlen( $_sPriceProper ) ) {
-            $_oWCProduct->set_regular_price( $_sPriceProper );
-        }
-        $_dRating = ( ( integer ) $_oUtil->getElement( $aItem, [ 'rating' ] ) ) / 10;
-        if ( $_dRating ) {
-            $_oWCProduct->set_average_rating( $_dRating );
-        }
-        $_iNumberOfRatings = ( integer ) $_oUtil->getElement( $aItem, [ 'number_of_reviews' ] );
-        if ( $_iNumberOfRatings ) {
-            $_oWCProduct->set_review_count( $_iNumberOfRatings );
-        }
-
-        $_iID = $_oWCProduct->save();
-        if ( ! $_iID ) {
+        $_iWCProductID = $_oWCProduct->save();
+        if ( ! $_iWCProductID ) {
             return 0;
         }
 
         // Plugin specific post meta
-        update_post_meta( $_iID, '_product_url', $aItem[ 'product_url' ] );
-        update_post_meta( $_iID, '_thumbnail_url', $aItem[ 'thumbnail_url' ] );
-        update_post_meta( $_iID, '_asin', $aItem[ 'ASIN' ] );
+        update_post_meta( $_iWCProductID, '_product_url', $aItem[ 'product_url' ] );
+        update_post_meta( $_iWCProductID, '_thumbnail_url', $aItem[ 'thumbnail_url' ] );
+        update_post_meta( $_iWCProductID, '_asin', $aItem[ 'ASIN' ] );
 
-        self::___setCategoriesFromItem( $_iID, $aItem );
-        return $_iID;
+        self::___setCategoriesFromItem( $_iWCProductID, $aItem );
+        return $_iWCProductID;
         
     }
 
