@@ -52,15 +52,10 @@ class UnitToProducts implements MemberInterface {
 
         // Process conversion
         foreach( $_aProducts as $_aProduct ) {
-
             try {
                 $this->___tryConvertUnitProductToWooCommerceProduct( $_aProduct );
             } catch ( \Exception $_oException ) {
-
-                // @todo Log error
-                // new \AmazonAutoLinks_Error()
-                // \AmazonAutoLinks_Debug::log( 'Unit ID: ' . $iUnitID . ': '. $_oException->getCode() . ' :' . $_oException->getMessage() );
-    
+                new \AmazonAutoLinks_Error( 'UNIT_TO_WCPRODUCTS_FAILURE', $_oException->getMessage(), $_aProduct );
             }
         }
         
