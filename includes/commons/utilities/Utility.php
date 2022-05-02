@@ -18,7 +18,8 @@ trait Utility {
         $_oUtil           = new \AmazonAutoLinks_Utility();
         $_sSKU            = $_oUtil->getElement( $aItem, [ 'product_id' ], $_oUtil->getElement( $aItem, [ 'ASIN' ] ) );
         $iWCProductID     = $iWCProductID ? $iWCProductID : wc_get_product_id_by_sku( $_sSKU );
-        
+        add_filter( 'woocommerce_new_product_data', [ __CLASS__, 'replyToGetNonNullContent' ] );
+
         try {
             
             $_oWCProduct      = new \WC_Product_Simple( $iWCProductID );
@@ -32,7 +33,7 @@ trait Utility {
             // Product meta
             $_oWCProduct->set_sku( $_sSKU );
             $_oWCProduct->set_short_description( $_oUtil->getElement( $aItem, [ 'text_description' ] ) );
-            $_oWCProduct->set_description( $_oUtil->getElement( $aItem, [ 'feature' ] ) );
+            $_oWCProduct->set_description( $_oUtil->getElement( $aItem, [ 'feature' ] ) );  // empty string for a default value to avoid `null`. null is not allowed for the `post_content` column
             $_sPriceProper     = self::getPriceAmountExtracted(
                 $_oUtil->getElement(
                     $aItem,
@@ -66,11 +67,13 @@ trait Utility {
             }            
             
         } catch ( \Exception $_oException ) {
+            remove_filter( 'woocommerce_new_product_data', [ __CLASS__, 'replyToGetNonNullContent' ] );
             return 0;    
-        } 
-        
+        }
+
         $_iWCProductID = $_oWCProduct->save();
         if ( ! $_iWCProductID ) {
+            remove_filter( 'woocommerce_new_product_data', [ __CLASS__, 'replyToGetNonNullContent' ] );
             return 0;
         }
 
@@ -80,6 +83,7 @@ trait Utility {
         update_post_meta( $_iWCProductID, '_asin', $aItem[ 'ASIN' ] );
 
         self::___setCategoriesFromItem( $_iWCProductID, $aItem );
+        remove_filter( 'woocommerce_new_product_data', [ __CLASS__, 'replyToGetNonNullContent' ] );
         return $_iWCProductID;
         
     }
@@ -116,8 +120,26 @@ trait Utility {
                         return ( integer ) $_aoResult->get_error_data( 'term_exists' );
                     }
                     return ( integer ) \AmazonAutoLinks_Utility::getElement( $_aoResult, [ 'term_id' ] );
-                }    
-    
+                }
+
+        /**
+         * Avoids `null` to prevent WP errors.
+         *
+         * For unknown reasons, there are cases that the `description` and `short_description` properties for a WC_Product object are not retrieved properly
+         * when inserting a new post. When it happens WordPress produces an error saying tht `post_content`/`post_excerpt` table column cannot be null.
+         * This method avoids that error.
+         *
+         * @since    0.3.0
+         * @param    array $aPostData
+         * @return   array
+         * @callback add_filter() woocommerce_new_product_data
+         */
+        static public function replyToGetNonNullContent( $aPostData ) {
+            $aPostData[ 'post_content' ] = isset( $aPostData[ 'post_content' ] ) ? $aPostData[ 'post_content' ] : '';
+            $aPostData[ 'post_excerpt' ] = isset( $aPostData[ 'post_excerpt' ] ) ? $aPostData[ 'post_excerpt' ] : '';
+            return $aPostData;
+        }
+
     /**
      * Extracts the first-found comma-separated digits from a string.
      * Possible Cases:

@@ -1,6 +1,9 @@
 <?php 
 
 return array(
+    "AutoAmazonLinks\\WooCommerceProducts\\Buttons\\Loader" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/c.buttons/Loader.php", 
+    "AutoAmazonLinks\\WooCommerceProducts\\Buttons\\Events\\DynamicProductCreation" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/c.buttons/events/DynamicProductCreation.php", 
+    "AutoAmazonLinks\\WooCommerceProducts\\Buttons\\Events\\ItemFormatTags" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/c.buttons/events/ItemFormatTags.php", 
     "AutoAmazonLinks\\WooCommerceProducts\\Converter\\Loader" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/c.converter/Loader.php", 
     "AutoAmazonLinks\\WooCommerceProducts\\Converter\\Admin\\FormFields\\Main" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/c.converter/admin/form-fields/Main.php", 
     "AutoAmazonLinks\\WooCommerceProducts\\Converter\\Admin\\PostMetaBoxes\\Main" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/c.converter/admin/post-meta-boxes/Main.php", 
