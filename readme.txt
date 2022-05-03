@@ -7,8 +7,8 @@ Requires PHP:       7.3
 Tested up to:       5.9.3
 Requires MySQL:     5.0.3
 Stable tag:         1.0.0
-License:            GPLv2 or later
-License URI:        https://www.gnu.org/licenses/gpl-2.0.html
+License:            GPLv3 or later License
+License URI:        https://www.gnu.org/licenses/gpl-3.0.html
 
 Adds on-site shopping carts using Auto Amazon Links and WooCommerce.
 

@@ -5,8 +5,11 @@
  * Author:            Michael Uno (miunosoft)
  * Author URI:        https://michaeluno.jp
  * Version:           1.0.0
+ * License:           GNU General Public License v3.0
+ * License URI:       http://www.gnu.org/licenses/gpl-3.0.html
  * GitHub Plugin URI: https://github.com/michaeluno/auto-amazon-links-woocommerce-products
  */
+
 namespace AutoAmazonLinks\WooCommerceProducts;
 
 if ( ! defined( 'ABSPATH' ) ) {
