@@ -1,5 +1,5 @@
-/test export-ignore  
-/tool export-ignore
+/test export-ignore
+/tools export-ignore
 _note export-ignore
 /node_modules export-ignore
 package.json export-ignore
