@@ -24,4 +24,4 @@ This WordPress plugin converts Auto Amazon Links units to WooCommerce products.
 2. In the **Item Format** text field in the **Template** section, insert `%wc_button%` and save the unit. 
 
 ## License
-[GPL v2 or later](./LICENSE).
+[GPL v2 or later](./LICENSE.txt).
