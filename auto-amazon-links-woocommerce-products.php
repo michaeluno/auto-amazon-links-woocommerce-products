@@ -9,6 +9,10 @@
  */
 namespace AutoAmazonLinks\WooCommerceProducts;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly
+}
+
 /**
  * @since 0.1.0
  */
