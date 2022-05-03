@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Name:       Auto Amazon Links - WooCommerce Products (Beta)
- * Description:       Converts units to WooCommerce products.
+ * Plugin Name:       Auto Amazon Links - WooCommerce Products
+ * Description:       Converts unit products to WooCommerce products.
  * Author:            Michael Uno (miunosoft)
  * Author URI:        https://michaeluno.jp
- * Version:           0.3.0
+ * Version:           1.0.0
  * GitHub Plugin URI: https://github.com/michaeluno/auto-amazon-links-woocommerce-products
  */
 namespace AutoAmazonLinks\WooCommerceProducts;
