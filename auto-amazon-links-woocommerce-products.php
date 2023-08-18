@@ -4,7 +4,7 @@
  * Description:       Converts unit products to WooCommerce products.
  * Author:            Michael Uno (miunosoft)
  * Author URI:        https://michaeluno.jp
- * Version:           1.0.0
+ * Version:           1.1.0b01
  * License:           GNU General Public License v3.0
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.html
  * GitHub Plugin URI: https://github.com/michaeluno/auto-amazon-links-woocommerce-products
