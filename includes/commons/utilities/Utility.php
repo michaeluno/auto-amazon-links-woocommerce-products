@@ -34,20 +34,10 @@ trait Utility {
             $_oWCProduct->set_sku( $_sSKU );
             $_oWCProduct->set_short_description( $_oUtil->getElement( $aItem, [ 'text_description' ] ) );
             $_oWCProduct->set_description( $_oUtil->getElement( $aItem, [ 'feature' ] ) );  // empty string for a default value to avoid `null`. null is not allowed for the `post_content` column
-            $_sPriceProper     = self::getPriceAmountExtracted(
-                $_oUtil->getElement(
-                    $aItem,
-                    [ 'price_amount' ], // for Product Search and PA-API units
-                    $_oUtil->getElement( $aItem, [ 'formatted_price' ], '' )   // for Category units
-                )
-            );
-            $_sPriceDiscounted = self::getPriceAmountExtracted(
-                $_oUtil->getElement(
-                    $aItem, [ 'discounted_price' ], // for PA-API units
-                    $_oUtil->getElement( $aItem, [ 'discounted_price_amount' ], '' )    // for Product Search units @todo set a proper element
-                )
-            );
+            $_sPriceProper     = self::___getPriceProper( $aItem, $_oUtil );
+            $_sPriceDiscounted = self::___getPriceDiscounted( $aItem, $_oUtil );
             $_sPriceDisplay    = strlen( $_sPriceDiscounted ) ? $_sPriceDiscounted : $_sPriceProper;
+
             if ( strlen( $_sPriceDiscounted ) ) {
                 $_oWCProduct->set_sale_price( $_sPriceDisplay );
             }
@@ -87,6 +77,45 @@ trait Utility {
         return $_iWCProductID;
         
     }
+
+        /**
+         * @since  1.1.0
+         * @return string
+         */
+        static private function ___getPriceProper( $aItem, $oUtil ) {
+            // for Category units
+            $_sPriceFormatted = $oUtil->getElement( $aItem, [ 'formatted_price' ], '' );
+            if ( strlen( $_sPriceFormatted ) ) {
+                return self::getPriceAmountExtracted( $_sPriceFormatted );
+            }
+            // for Product Search and PA-API units
+            $_sPriceAmount = $oUtil->getElement( $aItem, [ 'price_amount' ], '' );
+            if ( strlen( $_sPriceAmount ) && is_numeric( $_sPriceAmount ) ) {
+                return self::getPriceAmountExtracted( $_sPriceAmount / 100 );
+            }
+            return '';
+        }
+        /**
+         * @since  1.1.0
+         * @return string
+         */
+        static private function ___getPriceDiscounted( $aItem, $oUtil ) {
+            // for PA-API units
+            $_sPriceFormatted = $oUtil->getElement( $aItem, [ 'discounted_price_formatted' ], '' );   // in amount
+            if ( strlen( $_sPriceFormatted ) ) {
+                return self::getPriceAmountExtracted( $_sPriceFormatted );
+            }
+            $_sPriceAmount = $oUtil->getElement( $aItem, [ 'discounted_price' ], '' );   // in amount
+            if ( strlen( $_sPriceAmount ) && is_numeric( $_sPriceAmount ) ) {
+                return self::getPriceAmountExtracted( $_sPriceAmount / 100 );
+            }
+            // for Product Search units
+            $_sPriceAmount = $oUtil->getElement( $aItem, [ 'discounted_price_amount' ], '' );
+            if ( strlen( $_sPriceAmount ) && is_numeric( $_sPriceAmount ) ) {
+                return self::getPriceAmountExtracted( $_sPriceAmount / 100 );
+            }
+            return '';
+        }
 
         static private function ___setCategoriesFromItem( $iPostID, $aItem ) {
             foreach( array_values( \AmazonAutoLinks_Utility::getElementAsArray( $aItem, [ '_categories' ] ) ) as $_aCategories ) {
