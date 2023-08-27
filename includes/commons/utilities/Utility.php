@@ -36,9 +36,9 @@ trait Utility {
             $_oWCProduct->set_description( $_oUtil->getElement( $aItem, [ 'feature' ] ) );  // empty string for a default value to avoid `null`. null is not allowed for the `post_content` column
             $_sPriceProper     = self::___getPriceProper( $aItem, $_oUtil );
             $_sPriceDiscounted = self::___getPriceDiscounted( $aItem, $_oUtil );
-            $_sPriceDisplay    = strlen( $_sPriceDiscounted ) ? $_sPriceDiscounted : $_sPriceProper;
+            $_sPriceDisplay    = ( 0 < ( double ) $_sPriceDiscounted ) ? $_sPriceDiscounted : $_sPriceProper;
 
-            if ( strlen( $_sPriceDiscounted ) ) {
+            if (  0 < ( double ) $_sPriceDiscounted ) {
                 $_oWCProduct->set_sale_price( $_sPriceDisplay );
             }
             if ( $_sPriceDisplay ) {
