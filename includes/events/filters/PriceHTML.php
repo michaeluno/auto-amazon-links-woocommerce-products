@@ -89,7 +89,7 @@ class PriceHTML implements MemberInterface {
         $_sUpdatedDate  = \AmazonAutoLinks_PluginUtility::getSiteReadableDate( $_iUpdatedTime, get_option( 'date_format' ) . ' H:i', true );
         $_sUpdatedDate  = 'n/a' === $_sUpdatedDate ? $_sUpdatedDate : $_sUpdatedDate . ' ' . 'GMT ' . \AmazonAutoLinks_PluginUtility::getGMTOffsetString();
         return $sPriceHTML
-            . apply_filters( 'aal/wcp/pricing_disclaimer_tooltip', ' ' . $this->___getPricingDisclaimer( $_sUpdatedDate ) );
+            . apply_filters( 'aal/wcp/filter/pricing_disclaimer_tooltip', ' ' . $this->___getPricingDisclaimer( $_sUpdatedDate ) );
     }
         /**
          * @since  0.2.0
@@ -139,7 +139,7 @@ class PriceHTML implements MemberInterface {
              */
             private function ___getDisclaimerText() {
                 $_sPricingDisclaimer = __( "Product prices and availability are accurate as of the date/time indicated and are subject to change. Any price and availability information displayed on [relevant Amazon Site(s), as applicable] at the time of purchase will apply to the purchase of this product.", 'amazon-auto-links' );
-                return apply_filters( 'aal/wcp/pricing_disclaimer_text', $_sPricingDisclaimer );
+                return apply_filters( 'aal/wcp/filter/pricing_disclaimer_text', $_sPricingDisclaimer );
             }
 
     /**
@@ -147,7 +147,7 @@ class PriceHTML implements MemberInterface {
      * @callback add_action() woocommerce_after_cart_table
      */
     public function replyToInsertPricingDisclaimer() {
-        $_sPricingDisclaimer = apply_filters( 'aal/wcp/pricing_disclaimer_notice', $this->___getDisclaimerText() . ' '  . $this->___getDisclaimerTooltip() );
+        $_sPricingDisclaimer = apply_filters( 'aal/wcp/filter/pricing_disclaimer_notice', $this->___getDisclaimerText() . ' '  . $this->___getDisclaimerTooltip() );
         if ( '' === $_sPricingDisclaimer ) {
             return;
         }
