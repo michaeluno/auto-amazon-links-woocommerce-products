@@ -18,11 +18,21 @@ class CustomCartLinks implements MemberInterface {
      */
     public function run() {
 
-        add_filter( 'woocommerce_loop_add_to_cart_link', [ $this, 'replyToEditAddToCartButtonLinkInLoops' ], 100, 3);
+        // We need to wait for the option object to be ready so make it load later
+        add_action( 'aal_action_loaded_plugin', array( $this, 'replyToLoad' ) );
 
-        // Add to Cart text
-        add_filter( 'woocommerce_product_single_add_to_cart_text', [ $this, 'replyToEditAddToCartTextSingle' ], 100, 2 );
-        add_filter( 'woocommerce_product_add_to_cart_text', [ $this, 'replyToEditAddToCartTextInLoops' ], 100, 2 );
+    }
+
+    public function replyToLoad() {
+
+        // Check the option and return if not enabled
+        $_oOption  = \AmazonAutoLinks_Option::getInstance();
+        $_bEnabled = $_oOption->get( [ 'woocommerce', 'cart_to_link_enable' ], false );
+        if ( ! $_bEnabled ) {
+            return;
+        }
+
+        add_filter( 'woocommerce_loop_add_to_cart_link', [ $this, 'replyToEditAddToCartButtonLinkInLoops' ], 100, 3);
 
         // Replace the Add to Cart form with a button
         add_filter( 'woocommerce_before_add_to_cart_form', [ $this, 'replyToAddBeforeCartForm' ] );
@@ -40,24 +50,9 @@ class CustomCartLinks implements MemberInterface {
      */
     public function replyToEditAddToCartButtonLinkInLoops( $sLink, $oProduct, $aArguments ) {
         return "<a href='" . esc_url( $this->___getCartHref( $oProduct ) ) .  "' rel='nofollow' target='_blank' class='button product_type_simple add_to_cart_button text_replaceable' title='" . esc_attr( $oProduct->get_title() ) . "' >"
-                . $this->___getCartButtonLabel()
+                // . $this->getCartButtonLabel()
+                . apply_filters( 'aal/wcp/filter/cart_text', strip_tags( $sLink ) )
             .  "</a>";
-    }
-
-    /**
-     * @since  1.1.0
-     * @return string
-     */
-    public function replyToEditAddToCartTextSingle( $sButtonText, $oProduct ) {
-        return $this->___getCartButtonLabel();
-    }
-
-    /**
-     * @since  1.1.0
-     * @return string
-     */
-    public function replyToEditAddToCartTextInLoops( $sButtonText, $oProduct ) {
-        return $this->___getCartButtonLabel();
     }
 
      /**
@@ -81,7 +76,8 @@ class CustomCartLinks implements MemberInterface {
         // Add the "Add to Cart" link
         echo "<form class='cart'>"
                 . "<a href=" . esc_url( $this->___getCartHref( $GLOBALS[ 'product' ] ) ) . " class='button alt' rel='nofollow' target='_blank' title='" . esc_attr( $GLOBALS[ 'product' ]->get_title() ) . "'>"
-                    . $this->___getCartButtonLabel()
+                    // . $this->getCartButtonLabel()
+                    . apply_filters( 'aal/wcp/filter/cart_text', __( 'Add to Cart', 'woocommerce' ) )
                 . "</a>"
             . "</form>";
     }
@@ -104,9 +100,9 @@ class CustomCartLinks implements MemberInterface {
      * @since  1.1.0
      * @return string
      */
-    private function ___getCartButtonLabel() {
-        return __( 'Buy Now', 'amazon-auto-links' );
-    }
+    // private function ___getCartButtonLabel() {
+    //     return __( 'Buy Now', 'amazon-auto-links' );
+    // }
 
     /**
      * @since  1.1.0

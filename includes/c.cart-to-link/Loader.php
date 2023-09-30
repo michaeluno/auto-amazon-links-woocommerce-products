@@ -22,7 +22,15 @@ class Loader extends LoaderAbstract {
      * @var   string[] A list of component members.
      */
     public $aMembers = [
-         __NAMESPACE__ . '\\Events\\CustomCartLinks'   => null,
+         __NAMESPACE__ . '\\Events\\CustomCartLinks' => null,
+         __NAMESPACE__ . '\\Admin\\SettingUI'        => null,
     ];
 
+    /**
+     * @since  1.1.0
+     * @return void
+     */
+    // public function run() {
+    //     parent::run();
+    // }
 }
