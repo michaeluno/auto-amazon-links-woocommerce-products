@@ -33,9 +33,12 @@ class App {
     public $aMembers = [
         __NAMESPACE__ . '\\Converter\\Loader' => null,
         __NAMESPACE__ . '\\Buttons\\Loader' => null,
+        __NAMESPACE__ . '\\CartToLink\\Loader' => null,
+        __NAMESPACE__ . '\\ButtonLabel\\Loader' => null,
         __NAMESPACE__ . '\\Events\\Filters\\ProductThumbnails' => null,
         __NAMESPACE__ . '\\Events\\Filters\\PriceHTML' => null,
         __NAMESPACE__ . '\\Events\\Redirects\\Checkout' => null,
+        __NAMESPACE__ . '\\Events\\Actions\\SettingTab' => null,
     ];
 
     /**
@@ -43,6 +46,14 @@ class App {
      * @var   array The autoload class list.
      */
     static public $aClasses = [];
+
+    /**
+     * @since 1.1.0
+     * @var   array The tab slugs used for the admin setting UI.
+     */
+    static public $aTabs = [
+        'main' => 'woocommerce'
+    ];
 
     /**
      * Run the application.
