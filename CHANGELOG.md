@@ -1,5 +1,9 @@
 # Change Log
 
+#### 1.1.0
+- [Feature](https://github.com/michaeluno/auto-amazon-links-woocommerce-products/issues/6): Add filters for the pricing disclaimer
+- [Fix](https://github.com/michaeluno/auto-amazon-links-woocommerce-products/issues/4): incorrect prices 
+
 #### 1.0.0
 - Released.
 
