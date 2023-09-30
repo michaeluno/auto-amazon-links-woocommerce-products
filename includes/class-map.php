@@ -1,6 +1,8 @@
 <?php 
 
 return array(
+    "AutoAmazonLinks\\WooCommerceProducts\\Admin\\Form\\Sections\\Main" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/admin/form/sections/Main.php", 
+    "AutoAmazonLinks\\WooCommerceProducts\\Admin\\Tabs\\WooCommerce" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/admin/tabs/WooCommerce.php", 
     "AutoAmazonLinks\\WooCommerceProducts\\Buttons\\Loader" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/c.buttons/Loader.php", 
     "AutoAmazonLinks\\WooCommerceProducts\\Buttons\\Events\\DynamicProductCreation" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/c.buttons/events/DynamicProductCreation.php", 
     "AutoAmazonLinks\\WooCommerceProducts\\Buttons\\Events\\ItemFormatTags" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/c.buttons/events/ItemFormatTags.php", 
@@ -19,6 +21,7 @@ return array(
     "AutoAmazonLinks\\WooCommerceProducts\\Commons\\Admin\\FormFieldsInterface" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/commons/admin/FormFieldsInterface.php", 
     "AutoAmazonLinks\\WooCommerceProducts\\Commons\\Admin\\PostMetaBoxAbstract" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/commons/admin/PostMetaBoxAbstract.php", 
     "AutoAmazonLinks\\WooCommerceProducts\\Commons\\Utility" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/commons/utilities/Utility.php", 
+    "AutoAmazonLinks\\WooCommerceProducts\\Events\\Actions\\SettingTab" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/events/actions/SettingTab.php", 
     "AutoAmazonLinks\\WooCommerceProducts\\Events\\Filters\\PriceHTML" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/events/filters/PriceHTML.php", 
     "AutoAmazonLinks\\WooCommerceProducts\\Events\\Filters\\ProductThumbnails" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/events/filters/ProductThumbnails.php", 
     "AutoAmazonLinks\\WooCommerceProducts\\Events\\Redirects\\Checkout" => \AutoAmazonLinks\WooCommerceProducts\App::$sDirPath . "/includes/events/redirects/Checkout.php", 

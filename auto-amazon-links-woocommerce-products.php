@@ -37,6 +37,7 @@ class App {
         __NAMESPACE__ . '\\Events\\Filters\\ProductThumbnails' => null,
         __NAMESPACE__ . '\\Events\\Filters\\PriceHTML' => null,
         __NAMESPACE__ . '\\Events\\Redirects\\Checkout' => null,
+        __NAMESPACE__ . '\\Events\\Actions\\SettingTab' => null,
     ];
 
     /**
