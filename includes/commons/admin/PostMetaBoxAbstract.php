@@ -4,7 +4,7 @@ namespace AutoAmazonLinks\WooCommerceProducts\Commons\Admin;
 /**
  * @since 0.1.0
  */
-class PostMetaBoxAbstract extends \AmazonAutoLinks_AdminPageFramework_MetaBox {
+abstract class PostMetaBoxAbstract extends \AmazonAutoLinks_AdminPageFramework_MetaBox {
 
     /**
      * @since 0.1.0
