@@ -5,6 +5,9 @@ use AutoAmazonLinks\WooCommerceProducts\Commons\MemberInterface;
 use AutoAmazonLinks\WooCommerceProducts\Commons\Utility;
 
 /**
+ * Creates a product dynamically when an Add-to-Cart button added
+ * with the `%wc_button%` tag in the Item Format unit option is pressed.
+ *
  * @since 0.3.0
  */
 class DynamicProductCreation implements MemberInterface {

@@ -5,6 +5,8 @@ use AutoAmazonLinks\WooCommerceProducts\Commons\MemberInterface;
 use AutoAmazonLinks\WooCommerceProducts\Commons\Utility;
 
 /**
+ * Makes it possible to add WooCommerce Add-to-Cart buttons in Auto Amazon Links outputs.
+ *
  * @since 0.3.0
  */
 class ItemFormatTags implements MemberInterface {
