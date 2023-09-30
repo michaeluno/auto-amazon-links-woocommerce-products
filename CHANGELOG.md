@@ -1,7 +1,9 @@
 # Change Log
 
 #### 1.1.0
-- [Feature](https://github.com/michaeluno/auto-amazon-links-woocommerce-products/issues/6): Add filters for the pricing disclaimer
+- Feature: the ability to set a custom text to the Add to Cart button
+- [Feature](https://github.com/michaeluno/auto-amazon-links-woocommerce-products/issues/5): the ability to convert Add to Cart link to the direct store link 
+- [Feature](https://github.com/michaeluno/auto-amazon-links-woocommerce-products/issues/6): filter hooks for the pricing disclaimer
 - [Fix](https://github.com/michaeluno/auto-amazon-links-woocommerce-products/issues/4): incorrect prices 
 
 #### 1.0.0
