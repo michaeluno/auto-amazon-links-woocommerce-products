@@ -33,6 +33,7 @@ class App {
     public $aMembers = [
         __NAMESPACE__ . '\\Converter\\Loader' => null,
         __NAMESPACE__ . '\\Buttons\\Loader' => null,
+        __NAMESPACE__ . '\\CartToLink\\Loader' => null,
         __NAMESPACE__ . '\\Events\\Filters\\ProductThumbnails' => null,
         __NAMESPACE__ . '\\Events\\Filters\\PriceHTML' => null,
         __NAMESPACE__ . '\\Events\\Redirects\\Checkout' => null,
